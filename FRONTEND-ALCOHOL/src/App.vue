@@ -63,7 +63,7 @@ const fetchUserData = async () => {
 			<button type="submit">ログイン</button>
 		</form>
 		<p v-if="errorMessage" style="color:red;">{{ errorMessage }}</p>
-		<button type="" @click="fetchUserData">ユーザー取得</button>
+		<button type="submit" @click="fetchUserData">ユーザー取得</button>
 	</div>
 </template>
 
