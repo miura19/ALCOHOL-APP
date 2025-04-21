@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from 'axios'
+import { RouterLink, useRouter  } from 'vue-router'
+
+const router = useRouter();
 
 const email = ref('')
 const password = ref('')
@@ -11,7 +14,7 @@ const login = async () => {
 		// CSRF Cookieの取得
 		await axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
 
-		const response = await axios.post('http://localhost/login', {
+		const response = await axios.post('http://localhost/api/login', {
 			email: email.value,
 			password: password.value
 		}, {
@@ -24,7 +27,7 @@ const login = async () => {
 
 		console.log('ログイン成功:', response.data)
 		errorMessage.value = ''
-		// ここでrouterで遷移してもOK
+		router.push({ name:'home'});
 	} catch (error) {
 		console.error('ログイン失敗:', error)
 		errorMessage.value = 'ログインに失敗しました'
@@ -65,7 +68,7 @@ const fetchUserData = async () => {
 							<input v-model="password" type="password" minlength="8" maxlength="16" id="password" name="password" placeholder="••••••••" autocomplete="current-password" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
 						</div>
 					</div>
-					<button type="submit" class="w-full py-2 px-4 rounded-md shadow">ログイン</button>
+					<button type="submit" class="w-full py-2 px-4 rounded-md shadow text-white bg-sky-700 transition-all duration-300">ログイン</button>
 				</form>
 				<p v-if="errorMessage" style="color:red;">{{ errorMessage }}</p>
 				<p class="mt-4 text-cyan-800 underline"><RouterLink to="/register">新規ユーザー登録はこちら</RouterLink></p>
