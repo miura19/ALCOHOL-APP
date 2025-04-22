@@ -40,7 +40,7 @@ fetchAllUserData()
 
 const logout = async () => {
 	try {
-		await axios.post('http://localhost/api/logout', {
+		await axios.post('http://localhost/api/logout', null, {
 			withCredentials: true,
 			withXSRFToken: true,
 			headers: {
