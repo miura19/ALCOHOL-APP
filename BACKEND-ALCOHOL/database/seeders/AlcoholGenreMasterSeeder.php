@@ -13,25 +13,25 @@ class AlcoholGenreMasterSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('alcohol__genre__masters')->insert([
+        DB::table('alcohol_genre_masters')->insert([
             'name'       => 'ビール',
             'image'      => 'http://localhost/images/drink_beer.png',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('alcohol__genre__masters')->insert([
+        DB::table('alcohol_genre_masters')->insert([
             'name'       => 'チューハイ',
             'image'      => 'http://localhost/images/soda1_lemon.png',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('alcohol__genre__masters')->insert([
+        DB::table('alcohol_genre_masters')->insert([
             'name'       => 'ウイスキー',
             'image'      => 'http://localhost/images/drink_whisky.png',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('alcohol__genre__masters')->insert([
+        DB::table('alcohol_genre_masters')->insert([
             'name'       => 'ワイン',
             'image'      => 'http://localhost/images/wine_bottle_bourgogne.png',
             'created_at' => now(),

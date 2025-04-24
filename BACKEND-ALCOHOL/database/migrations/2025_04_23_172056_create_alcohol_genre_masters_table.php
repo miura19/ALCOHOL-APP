@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alcohol__genre__masters', function (Blueprint $table) {
+        Schema::create('alcohol_genre_masters', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable()->comment('酒のジャンル名');
             $table->string('image')->nullable()->comment('酒のジャンル画像');
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alcohol__genre__masters');
+        Schema::dropIfExists('alcohol_genre_masters');
     }
 };
