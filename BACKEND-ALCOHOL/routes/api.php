@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\AlcoholGenreMaster;
+use App\Models\Question;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -18,8 +19,15 @@ Route::get('/genres', function () {
 })->middleware('auth:sanctum');
 
 Route::get('/genre/{id}', function ($id) {
-    $genre = AlcoholGenreMaster::where('id','=', $id)
+    $genre = AlcoholGenreMaster::where('id', '=', $id)
         ->select('id', 'name', 'image')
         ->first();
-    return response()->json($genre);
+
+    $questions = Question::where('genre_id', '=', $id)
+        ->with('questionChoices')
+        ->get();
+    return response()->json([
+        'genre' => $genre,
+        'questions' => $questions
+    ]);
 })->middleware('auth:sanctum');
