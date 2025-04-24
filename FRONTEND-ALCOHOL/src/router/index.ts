@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import QuestionView from '../views/QuestionView.vue'
 import axios from 'axios'
 
 const router = createRouter({
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+    },
+    {
+      path: '/questions',
+      name: 'questions',
+      component: QuestionView,
     },
   ],
 })
