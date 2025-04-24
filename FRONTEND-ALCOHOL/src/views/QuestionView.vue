@@ -118,8 +118,7 @@ const logout = async () => {
 		<section class="dark:bg-gray-100 dark:text-gray-800">
 			<div class="container p-4 mx-auto space-y-4 sm:p-6">
 				<div class="space-y-4">
-					<h3 class="text-2xl font-bold leading-none sm:text-5xl text-center">{{ questions[0]?.question_text
-						}}</h3>
+					<h3 class="text-2xl font-bold leading-none sm:text-5xl text-center">{{ questions[0]?.question_text }}</h3>
 				</div>
 				<div class="grid w-full grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 p-8">
 					<div class="space-y-4">
