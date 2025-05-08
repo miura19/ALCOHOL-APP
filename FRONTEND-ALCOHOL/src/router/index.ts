@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import QuestionView from '../views/QuestionView.vue'
+import ResultView from '../views/ResultView.vue'
 import axios from 'axios'
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/questions',
       name: 'questions',
       component: QuestionView,
+    },
+    {
+      path: '/result',
+      name: 'result',
+      component: ResultView,
     },
   ],
 })

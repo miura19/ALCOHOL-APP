@@ -23,5 +23,25 @@ class QuestionSeeder extends Seeder
             ],
             // 他の質問も追加OK
         ]);
+        DB::table('questions')->insert([
+            [
+                'genre_id' => 1, // ビール
+                'question_text' => 'メーカーにこだわりはある？',
+                'order' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // 他の質問も追加OK
+        ]);
+        DB::table('questions')->insert([
+            [
+                'genre_id' => 1, // ビール
+                'question_text' => 'クラフトビールは好き？',
+                'order' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // 他の質問も追加OK
+        ]);
     }
 }

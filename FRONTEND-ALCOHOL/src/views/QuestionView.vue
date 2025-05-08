@@ -27,6 +27,7 @@ type QuestionChoice = {
 	id: number
 	question_id: number
 	choice_text: string
+	question_number: number
 	score: number
 	created_at: string
 	updated_at: string
@@ -44,6 +45,8 @@ type Question = {
 const genre = ref<Genre>()
 const questions = ref<Question[]>([])
 const user = ref<User | null>(null)
+const questionNumber = ref(0)
+const totalScore = ref(0)
 
 //認証済みならユーザーデータを取得
 const fetchAuthUserData = async () => {
@@ -73,7 +76,7 @@ const fetchAlcoholGenreMaster = async () => {
 			}
 		})
 		console.log('アルコールジャンル:', res.data.genre)
-		console.log('質問:', res.data.questions[0])
+		console.log('質問:', res.data.questions)
 		genre.value = res.data.genre;
 		questions.value = res.data.questions;
 	} catch (error) {
@@ -97,6 +100,17 @@ const logout = async () => {
 		console.error('ログアウト失敗:', error)
 	}
 }
+
+const choiceClick = (id: number, score: number) => {
+	console.log("選択肢" , id, "スコア" , score);
+	totalScore.value += score;
+	console.log("合計スコア" , totalScore.value);
+	questionNumber.value++;
+	if (id >= questions.value.length) {
+		// 最後の質問に到達した場合、結果画面に遷移
+		router.push({ name: 'result', query: { totalScore: totalScore.value, genreId: genreId } })
+	} 
+}
 </script>
 
 <template>
@@ -118,7 +132,7 @@ const logout = async () => {
 		<section class="dark:bg-gray-100 dark:text-gray-800">
 			<div class="container p-4 mx-auto space-y-4 sm:p-6">
 				<div class="space-y-4">
-					<h3 class="text-2xl font-bold leading-none sm:text-5xl text-center">{{ questions[0]?.question_text }}</h3>
+					<h3 class="text-2xl font-bold leading-none sm:text-5xl text-center">{{ questions[questionNumber]?.question_text }}</h3>
 				</div>
 				<div class="grid w-full grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 p-8">
 					<div class="space-y-4">
@@ -131,8 +145,8 @@ const logout = async () => {
 		<section class="text-gray-600 body-font">
 			<div class="container px-5 py-4 mx-auto">
 				<div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
-					<div v-for="choice in questions[0]?.question_choices" :key="choice.id" class="p-2 sm:w-1/2 w-full">
-						<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+					<div v-for="choice in questions[questionNumber]?.question_choices" :key="choice.id" class="p-2 sm:w-1/2 w-full">
+						<div class="bg-gray-100 rounded flex p-4 h-full items-center" @click="choiceClick(questions[questionNumber].id, choice.score)">
 							<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
 								stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24">
 								<path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
