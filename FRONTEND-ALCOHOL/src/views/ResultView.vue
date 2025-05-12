@@ -57,23 +57,6 @@ const fetchAllUserData = async () => {
 }
 fetchAllUserData()
 
-const fetchAlcoholGenreMaster = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/genres', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('アルコールジャンル:', res.data)
-		genres.value = res.data;
-	} catch (error) {
-		console.error('アルコールジャンル取得失敗:', error)
-	}
-}
-fetchAlcoholGenreMaster()
-
 const logout = async () => {
 	try {
 		await axios.post('http://localhost/api/logout', null, {

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\AlcoholGenreMaster;
 use App\Models\Question;
+use App\Models\AlcoholMaster;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,3 +32,12 @@ Route::get('/genre/{id}', function ($id) {
         'questions' => $questions
     ]);
 })->middleware('auth:sanctum');
+
+Route::post('/result', function (Request $request) {
+    $results = AlcoholMaster::where('genre_id', '=', $request->genre_id)
+        ->select('id', 'name', 'image', 'genre_id', 'description', 'min_score', 'max_score')
+        ->where('min_score', '<=', $request->total_score)
+        ->where('max_score', '>=', $request->total_score)
+        ->get();
+    return response()->json($results);
+});

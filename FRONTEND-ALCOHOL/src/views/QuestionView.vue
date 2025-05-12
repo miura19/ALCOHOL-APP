@@ -101,14 +101,29 @@ const logout = async () => {
 	}
 }
 
-const choiceClick = (id: number, score: number) => {
+const choiceClick = async (id: number, score: number) => {
 	console.log("選択肢" , id, "スコア" , score);
 	totalScore.value += score;
 	console.log("合計スコア" , totalScore.value);
 	questionNumber.value++;
 	if (id >= questions.value.length) {
 		// 最後の質問に到達した場合、結果画面に遷移
-		router.push({ name: 'result', query: { totalScore: totalScore.value, genreId: genreId } })
+		try {
+			const response = await axios.post('http://localhost/api/result', {
+				genre_id: genreId,
+				total_score: totalScore.value
+			}, {
+				withCredentials: true,
+				withXSRFToken: true,
+				headers: {
+					Accept: 'application/json',
+				}
+			})
+			console.log('結果:', response.data)
+			router.push({ name: 'result'})
+		} catch (error) {
+			console.error('結果取得失敗:', error);
+		}
 	} 
 }
 </script>
