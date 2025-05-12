@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(UserSeeder::class);
+        $this->call(AlcoholGenreMasterSeeder::class);
+        $this->call(QuestionSeeder::class);
+        $this->call(QuestionChoiceSeeder::class);
+        $this->call(AlcoholMasterSeeder::class);
     }
 }

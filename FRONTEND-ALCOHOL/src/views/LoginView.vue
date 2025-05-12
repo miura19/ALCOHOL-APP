@@ -34,22 +34,6 @@ const login = async () => {
 	}
 }
 
-//認証済みならユーザーデータを取得
-const fetchUserData = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/user', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('ユーザーデータ:', res.data)
-	} catch (error) {
-		console.error('ユーザーデータ取得失敗:', error)
-	}
-}
-
 </script>
 
 <template>
@@ -72,7 +56,6 @@ const fetchUserData = async () => {
 				</form>
 				<p v-if="errorMessage" style="color:red;">{{ errorMessage }}</p>
 				<p class="mt-4 text-cyan-800 underline"><RouterLink to="/register">新規ユーザー登録はこちら</RouterLink></p>
-				<button type="submit" @click="fetchUserData">ユーザー取得</button>
 			</div>
 		</div>
 	</main>
