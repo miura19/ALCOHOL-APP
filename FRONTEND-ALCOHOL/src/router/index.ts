@@ -39,9 +39,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   // ログインページ or 登録ページならスキップ
-	if (to.name === 'login' || to.name === 'register') {
-		return next()
-	}
+	// if (to.name === 'login' || to.name === 'register') {
+	// 	return next()
+	// }
   try {
     const res = await axios.get('http://localhost/api/user', {
       withCredentials: true,
@@ -53,6 +53,11 @@ router.beforeEach(async (to, from, next) => {
 
     // ユーザーが取得できた → ログイン済み
     console.log('認証済みユーザー:', res.data)
+
+    // ✅ ログイン済みなのに login or register にアクセスしようとした場合は /home にリダイレクト
+    if (to.name === 'login' || to.name === 'register') {
+      return next('/home')
+    }
     next()
 
   } catch (error) {
