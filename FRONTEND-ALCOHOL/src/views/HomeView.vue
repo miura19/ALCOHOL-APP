@@ -1,78 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { RouterLink, useRouter } from 'vue-router'
+import { useAlcoholGenreMasterStore } from '@/stores/alcoholGenreMaster'
+import { useAuthUserStore } from '@/stores/authUser'
+
+const alcohol_genre_master_store = useAlcoholGenreMasterStore()
+const auth_user_data_store = useAuthUserStore()
+
+onMounted(() => {
+	alcohol_genre_master_store.fetchAlcoholGenreMaster()
+	auth_user_data_store.fetchAuthUserData()
+	auth_user_data_store.fetchAllUserData()
+})
 
 const router = useRouter();
-
-type User = {
-	id: number
-	name: string
-	email: string
-	created_at: string
-}
-
-type Genre = {
-	id: number
-	name: string
-	image: string
-	created_at: string
-	updated_at: string
-}
-
-const genres = ref<Genre[]>([])
-const user = ref<User>()
-
-//認証済みならユーザーデータを取得
-const fetchAuthUserData = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/user', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('ユーザーデータ:', res.data)
-		user.value = res.data;
-	} catch (error) {
-		console.error('ユーザーデータ取得失敗:', error)
-	}
-}
-fetchAuthUserData()
-
-const fetchAllUserData = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/users', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('登録済みユーザーデータ一覧:', res.data)
-	} catch (error) {
-		console.error('登録済みユーザーデータ一覧取得失敗:', error)
-	}
-}
-fetchAllUserData()
-
-const fetchAlcoholGenreMaster = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/genres', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('アルコールジャンル:', res.data)
-		genres.value = res.data;
-	} catch (error) {
-		console.error('アルコールジャンル取得失敗:', error)
-	}
-}
-fetchAlcoholGenreMaster()
 
 const logout = async () => {
 	try {
@@ -99,8 +41,8 @@ const logout = async () => {
 				</RouterLink>
 			</div>
 			<div class="flex items-center space-x-6">
-				<div v-if="user">
-					<div class="font-medium text-gray-900 text-xl">{{ user.name }}</div>
+				<div v-if="auth_user_data_store.user">
+					<div class="font-medium text-gray-900 text-xl">{{ auth_user_data_store.user.name }}</div>
 				</div>
 				<button type="submit" @click="logout"
 					class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">ログアウト</button>
@@ -114,7 +56,7 @@ const logout = async () => {
 					<h3 class="text-2xl font-bold leading-none sm:text-5xl text-center">どんな酒を求めてる？</h3>
 				</div>
 				<div class="grid w-full grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-					<div class="space-y-4" v-for="genre in genres" :key="genre.id">
+					<div class="space-y-4" v-for="genre in alcohol_genre_master_store.genres" :key="genre.id">
 						<RouterLink :to="{ path: '/questions', query: { genre: genre.id } }">
 							<img alt="" class="object-cover h-56 mx-auto mb-4 bg-center rounded-sm dark:bg-gray-500"
 								:src="genre.image">
