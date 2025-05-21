@@ -3,6 +3,14 @@ import { onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAlcoholGenreMasterStore } from '@/stores/alcoholGenreMaster'
 import { useAuthUserStore } from '@/stores/authUser'
+import { useQuestionsStore } from '@/stores/questions'
+
+const use_questions_store = useQuestionsStore()
+
+// if (use_questions_store.totalScore > 0) {
+// 	// すでに質問が終わっている場合、スコアをリセット
+// 	use_questions_store.totalScore = 0
+// }
 
 const alcohol_genre_master_store = useAlcoholGenreMasterStore()
 const auth_user_data_store = useAuthUserStore()

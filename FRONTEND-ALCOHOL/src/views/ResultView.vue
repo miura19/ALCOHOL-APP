@@ -2,6 +2,10 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { RouterLink, useRouter } from 'vue-router'
+import { useQuestionsStore } from '@/stores/questions'
+
+const use_questions_store = useQuestionsStore()
+console.log('use_questions_store!!!:', use_questions_store.resultData);
 
 const router = useRouter();
 
