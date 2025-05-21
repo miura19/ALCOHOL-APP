@@ -2,36 +2,16 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { RouterLink, useRouter  } from 'vue-router'
+import { useAuthUserStore } from '@/stores/authUser'
+const auth_user_data_store = useAuthUserStore()
 
 const router = useRouter();
-
 const email = ref('')
 const password = ref('')
-const errorMessage = ref('')
 
 const login = async () => {
-	try {
-		// CSRF Cookieの取得
-		await axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
-
-		const response = await axios.post('http://localhost/api/login', {
-			email: email.value,
-			password: password.value
-		}, {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-
-		console.log('ログイン成功:', response.data)
-		errorMessage.value = ''
-		router.push({ name:'home'});
-	} catch (error) {
-		console.error('ログイン失敗:', error)
-		errorMessage.value = 'ログインに失敗しました'
-	}
+	await auth_user_data_store.login(email.value, password.value)
+	router.push({ name:'home'});
 }
 
 </script>
@@ -54,7 +34,7 @@ const login = async () => {
 					</div>
 					<button type="submit" class="w-full py-2 px-4 rounded-md shadow text-white bg-sky-700 transition-all duration-300">ログイン</button>
 				</form>
-				<p v-if="errorMessage" style="color:red;">{{ errorMessage }}</p>
+				<p v-if="auth_user_data_store.errorMessage" style="color:red;">{{ auth_user_data_store.errorMessage }}</p>
 				<p class="mt-4 text-cyan-800 underline"><RouterLink to="/register">新規ユーザー登録はこちら</RouterLink></p>
 			</div>
 		</div>

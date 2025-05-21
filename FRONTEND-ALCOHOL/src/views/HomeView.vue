@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAlcoholGenreMasterStore } from '@/stores/alcoholGenreMaster'
 import { useAuthUserStore } from '@/stores/authUser'
@@ -17,18 +16,8 @@ onMounted(() => {
 const router = useRouter();
 
 const logout = async () => {
-	try {
-		await axios.post('http://localhost/api/logout', null, {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		router.push({ name: 'login' })
-	} catch (error) {
-		console.error('ログアウト失敗:', error)
-	}
+	await auth_user_data_store.logout()
+	router.push({ name: 'login' })
 }
 </script>
 

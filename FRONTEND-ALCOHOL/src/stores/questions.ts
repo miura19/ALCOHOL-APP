@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
 
-export const useAlcoholGenreMasterStore = defineStore('fetchAlcoholGenreMaster', () => {
+export const useQuestionsStore = defineStore('useQuestionsStore', () => {
     type Genre = {
         id: number
         name: string
