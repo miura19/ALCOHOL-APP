@@ -29,6 +29,8 @@ export const useQuestionsStore = defineStore('useQuestionsStore', () => {
                 })
                 console.log('結果:', response.data)
                 resultData.value = response.data;
+                questionNumber.value = 0;
+                totalScore.value = 0;
                 return true;
             } catch (error) {
                 console.error('結果取得失敗:', error);
