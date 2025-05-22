@@ -5,9 +5,16 @@ import { useRouter } from 'vue-router'
 
 export const useQuestionsStore = defineStore('useQuestionsStore', () => {
 
+    type Result = {
+        id: number
+        name: string
+        description: string
+        image: string
+    }
+
     const questionNumber = ref(0)
     const totalScore = ref(0)
-    const resultData = ref(null)
+    const resultData = ref<Result | null>(null)
 
     const nextQuestion = async (id: number, score: number, genreId: number, questionsLength: number) => {
         console.log(id + "問目", "スコア", score);

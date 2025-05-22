@@ -4,10 +4,11 @@ import axios from 'axios'
 import { RouterLink, useRouter } from 'vue-router'
 import { useQuestionsStore } from '@/stores/questions'
 
-const use_questions_store = useQuestionsStore()
-console.log('use_questions_store!!!:', use_questions_store.resultData);
-
 const router = useRouter();
+
+const use_questions_store = useQuestionsStore()
+const resultData = use_questions_store.resultData;
+console.log('resultData:だよ！！', resultData);
 
 type User = {
 	id: number
@@ -91,6 +92,7 @@ const logout = async () => {
 					class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">ログアウト</button>
 			</div>
 		</div>
+		{{ resultData[0]?.name }}
 	</header>
     Resutpage is here!
 </template>
