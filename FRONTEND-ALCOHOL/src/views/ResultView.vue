@@ -99,7 +99,7 @@ const logout = async () => {
 				<h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-800">{{ resultData[0]?.name }}</h1>
 				<p class="mb-8 mt-8 leading-relaxed text-xl">{{ resultData[0]?.description }}</p>
 				<div class="w-full">
-					<img class="mt-16 object-cover object-center rounded" alt="hero" src="https://dummyimage.com/720x600">
+					<img class="mt-16 object-cover object-center rounded mx-auto" alt="お酒の画像" :src="resultData[0]?.image" width="500px" height="500px" />
 				</div>
 			</div>
 		</div>
