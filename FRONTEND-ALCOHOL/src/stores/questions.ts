@@ -10,7 +10,7 @@ export const useQuestionsStore = defineStore('useQuestionsStore', () => {
         name: string
         description: string
         image: string
-    }
+    }[]
 
     const questionNumber = ref(0)
     const totalScore = ref(0)
