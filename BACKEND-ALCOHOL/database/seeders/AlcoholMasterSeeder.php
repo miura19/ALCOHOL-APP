@@ -20,7 +20,7 @@ class AlcoholMasterSeeder extends Seeder
                 'min_score' => 0,
                 'max_score' => 5,
                 'description' => '飲みごたえがあり、スッキリとした味わい',
-                'image' => 'http://localhost/images/sapporo_beer.png',
+                'image' => 'http://localhost/images/sapporo_beer.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
