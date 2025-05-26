@@ -1,41 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import axios from 'axios'
 import { RouterLink, useRouter  } from 'vue-router'
+import { useAuthUserStore } from '@/stores/authUser'
+const auth_user_data_store = useAuthUserStore()
 
 const router = useRouter();
 
 const name = ref<string>("");
 const email = ref('')
 const password = ref('')
-const password_confirm = ref('')
-const errorMessage = ref('')
+const password_confirmation = ref('')
 
 const register = async () => {
-	try {
-		// CSRF Cookieの取得
-		await axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
-
-		const response = await axios.post('http://localhost/api/register', {
-			name: name.value,
-			email: email.value,
-			password: password.value,
-			password_confirmation: password_confirm.value
-		}, {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-
-		console.log('登録成功:', response.data)
-		errorMessage.value = ''
-		router.push({ name:'home'});
-	} catch (error) {
-		console.error('登録失敗:', error)
-		errorMessage.value = '登録に失敗しました'
-	}
+	await auth_user_data_store.register(name.value, email.value, password.value, password_confirmation.value)
+	router.push({ name: 'home' });
 }
 </script>
 
@@ -60,14 +38,14 @@ const register = async () => {
 						</div>
 					</div>
 					<div class="mb-6 relative">
-						<label for="password_confirm" class="block text-sm font-medium text-gray-700">パスワード確認</label>
+						<label for="password_confirmation" class="block text-sm font-medium text-gray-700">パスワード確認</label>
 						<div class="relative">
-							<input v-model="password_confirm" type="password" minlength="8" maxlength="16" id="password_confirm" name="password_confirm" autocomplete="current-password" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
+							<input v-model="password_confirmation" type="password" minlength="8" maxlength="16" id="password_confirmation" name="password_confirmation" autocomplete="current-password" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
 						</div>
 					</div>
 					<button type="submit" class="w-full text-white py-2 px-4 rounded-md shadow bg-sky-700 transition-all duration-300">登録</button>
 				</form>
-				<p v-if="errorMessage" style="color:red;">{{ errorMessage }}</p>
+				<p v-if="auth_user_data_store.errorMessage" style="color:red;">{{ auth_user_data_store.errorMessage }}</p>
 				<p class="mt-4 text-cyan-800 underline"><RouterLink to="/login">登録済みの方はこちらからログイン</RouterLink></p>
 			</div>
 		</div>

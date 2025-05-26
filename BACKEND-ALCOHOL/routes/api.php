@@ -38,6 +38,6 @@ Route::post('/result', function (Request $request) {
         ->select('id', 'name', 'image', 'genre_id', 'description', 'min_score', 'max_score')
         ->where('min_score', '<=', $request->total_score)
         ->where('max_score', '>=', $request->total_score)
-        ->get();
+        ->first();
     return response()->json($results);
 });

@@ -38,10 +38,6 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  // ログインページ or 登録ページならスキップ
-	// if (to.name === 'login' || to.name === 'register') {
-	// 	return next()
-	// }
   try {
     const res = await axios.get('http://localhost/api/user', {
       withCredentials: true,
@@ -50,23 +46,29 @@ router.beforeEach(async (to, from, next) => {
         Accept: 'application/json',
       }
     })
-
-    // ユーザーが取得できた → ログイン済み
+    // ✅ ログイン済み
     console.log('認証済みユーザー:', res.data)
 
-    // ✅ ログイン済みなのに login or register にアクセスしようとした場合は /home にリダイレクト
+    // login or register にアクセスしようとしたら /home にリダイレクト
     if (to.name === 'login' || to.name === 'register') {
-      return next('/home')
+      return next({ name: 'home' })
     }
     next()
 
-  } catch (error) {
-    // 401 Unauthorized → 未ログイン
-    console.warn('未認証 or エラー:', error)
-    if (to.path !== '/login') {
-      next('/login')
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      // 未ログインは想定内
+      console.warn('未ログインユーザーとして処理を続行')
+
+      if (to.name === 'login' || to.name === 'register') {
+        return next()
+      } else {
+        return next({ name: 'login' })
+      }
     } else {
-      next()
+      // それ以外のエラーは想定外として出す
+      console.error('想定外のエラー:', error)
+      return next({ name: 'login' })
     }
   }
 })
