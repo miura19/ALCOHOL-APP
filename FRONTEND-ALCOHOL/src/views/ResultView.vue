@@ -1,81 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useQuestionsStore } from '@/stores/questions'
+import { useAuthUserStore } from '@/stores/authUser'
 
 const router = useRouter();
 
 const use_questions_store = useQuestionsStore()
+const auth_user_data_store = useAuthUserStore()
+
 const resultData = use_questions_store.resultData;
 console.log('resultData:だよ！！', resultData);
 
-type User = {
-	id: number
-	name: string
-	email: string
-	created_at: string
-}
-
-type Genre = {
-	id: number
-	name: string
-	image: string
-	created_at: string
-	updated_at: string
-}
-
-const genres = ref<Genre[]>([])
-const user = ref<User>()
-
-//認証済みならユーザーデータを取得
-const fetchAuthUserData = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/user', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('ユーザーデータ:', res.data)
-		user.value = res.data;
-	} catch (error) {
-		console.error('ユーザーデータ取得失敗:', error)
-	}
-}
-fetchAuthUserData()
-
-const fetchAllUserData = async () => {
-	try {
-		const res = await axios.get('http://localhost/api/users', {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		console.log('登録済みユーザーデータ一覧:', res.data)
-	} catch (error) {
-		console.error('登録済みユーザーデータ一覧取得失敗:', error)
-	}
-}
-fetchAllUserData()
+onMounted(() => {
+	auth_user_data_store.fetchAuthUserData()
+})
 
 const logout = async () => {
-	try {
-		await axios.post('http://localhost/api/logout', null, {
-			withCredentials: true,
-			withXSRFToken: true,
-			headers: {
-				Accept: 'application/json',
-			}
-		})
-		router.push({ name: 'login' })
-	} catch (error) {
-		console.error('ログアウト失敗:', error)
-	}
+	await auth_user_data_store.logout()
+	router.push({ name: 'login' })
 }
+
 </script>
 
 <template>
@@ -87,7 +32,9 @@ const logout = async () => {
 				</RouterLink>
 			</div>
 			<div class="flex items-center space-x-6">
-				<div class="font-medium text-gray-900 text-xl">{{ user?.name }}</div>
+				<div v-if="auth_user_data_store.user">
+					<div class="font-medium text-gray-900 text-xl">{{ auth_user_data_store.user.name }}</div>
+				</div>				
 				<button type="submit" @click="logout" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">ログアウト</button>
 			</div>
 		</div>			

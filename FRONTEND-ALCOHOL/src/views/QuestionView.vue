@@ -16,7 +16,6 @@ console.log('genreId:', genreId);
 
 onMounted(() => {
 	auth_user_data_store.fetchAuthUserData()
-	auth_user_data_store.fetchAllUserData()
 	alcohol_genre_master_store.fetchAlcoholGenreMasterDetail(genreId)
 })
 
