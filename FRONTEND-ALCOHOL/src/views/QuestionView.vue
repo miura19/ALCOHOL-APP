@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { RouterLink, useRouter, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useAlcoholGenreMasterStore } from '@/stores/alcoholGenreMaster'
-import { useAuthUserStore } from '@/stores/authUser'
 import { useQuestionsStore } from '@/stores/questions'
+import Header from '@/components/Header.vue'
 
 const alcohol_genre_master_store = useAlcoholGenreMasterStore()
-const auth_user_data_store = useAuthUserStore()
 const use_questions_store = useQuestionsStore()
 
 const router = useRouter();
@@ -15,14 +14,8 @@ const genreId = Number(route.query.genre);
 console.log('genreId:', genreId);
 
 onMounted(() => {
-	auth_user_data_store.fetchAuthUserData()
 	alcohol_genre_master_store.fetchAlcoholGenreMasterDetail(genreId)
 })
-
-const logout = async () => {
-	await auth_user_data_store.logout()
-	router.push({ name: 'login' })
-}
 
 const choiceClickHandler = async (id: number, score: number) => {
 	const finishedFlag = await use_questions_store.nextQuestion(id, score, genreId, alcohol_genre_master_store.questions.length);
@@ -33,20 +26,7 @@ const choiceClickHandler = async (id: number, score: number) => {
 </script>
 
 <template>
-	<header class="text-gray-600 body-font">
-		<div class="container mx-auto flex items-center justify-between p-5 flex-col md:flex-row">
-			<div class="flex title-font font-medium items-center text-gray-900">
-				<RouterLink to="/home">
-					<div class="ml-3 text-xl">ALCOLE-RECOMMENDATION</div>
-				</RouterLink>
-			</div>
-			<div class="flex items-center space-x-6">
-				<div class="font-medium text-gray-900 text-xl">{{ auth_user_data_store.user?.name }}</div>
-				<button type="submit" @click="logout"
-					class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">ログアウト</button>
-			</div>
-		</div>
-	</header>
+	<Header />
 	<main>
 		<section class="dark:bg-gray-100 dark:text-gray-800">
 			<div class="container p-4 mx-auto space-y-4 sm:p-6">

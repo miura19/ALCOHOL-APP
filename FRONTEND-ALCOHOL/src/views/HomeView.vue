@@ -2,42 +2,18 @@
 import { onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAlcoholGenreMasterStore } from '@/stores/alcoholGenreMaster'
-import { useAuthUserStore } from '@/stores/authUser'
+import Header from '@/components/Header.vue'
 
 const alcohol_genre_master_store = useAlcoholGenreMasterStore()
-const auth_user_data_store = useAuthUserStore()
 
 onMounted(() => {
 	alcohol_genre_master_store.fetchAlcoholGenreMaster()
-	auth_user_data_store.fetchAuthUserData()
-	auth_user_data_store.fetchAllUserData()
 })
 
-const router = useRouter();
-
-const logout = async () => {
-	await auth_user_data_store.logout()
-	router.push({ name: 'login' })
-}
 </script>
 
 <template>
-	<header class="text-gray-600 body-font">
-		<div class="container mx-auto flex items-center justify-between p-5 flex-col md:flex-row">
-			<div class="flex title-font font-medium items-center text-gray-900">
-				<RouterLink to="/home">
-					<div class="ml-3 text-xl">ALCOLE-RECOMMENDATION</div>
-				</RouterLink>
-			</div>
-			<div class="flex items-center space-x-6">
-				<div v-if="auth_user_data_store.user">
-					<div class="font-medium text-gray-900 text-xl">{{ auth_user_data_store.user.name }}</div>
-				</div>
-				<button type="submit" @click="logout"
-					class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">ログアウト</button>
-			</div>
-		</div>
-	</header>
+	<Header />
 	<main>
 		<section class="py-6 dark:bg-gray-100 dark:text-gray-800">
 			<div class="container p-4 mx-auto space-y-16 sm:p-10">
